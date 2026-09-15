@@ -14,7 +14,7 @@ use App\Models\User;
 
 class KelayakanController extends Controller
 {
-  public function index()
+  public function index(Request $request)
 {
     $query = Kelayakan::with([
         'user',
@@ -22,11 +22,105 @@ class KelayakanController extends Controller
         'presentasi',
     ]);
 
+    // Petani hanya melihat data miliknya sendiri
     if (!Auth::user()->isSuperAdmin()) {
         $query->where(
             'id_user',
             Auth::id()
         );
+    }
+
+    $search = trim($request->input('search', ''));
+
+    if ($search !== '') {
+
+        $query->where(function ($q) use ($search) {
+
+            // Hasil kelayakan dan sektor
+            $q->where(
+                'hasil_kelayakan',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'id_sektor',
+                'like',
+                '%' . $search . '%'
+            )
+
+            // Nama / username petani
+            ->orWhereHas(
+                'user',
+                function ($userQuery) use ($search) {
+
+                    $userQuery
+                        ->where(
+                            'nama_user',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'user_name',
+                            'like',
+                            '%' . $search . '%'
+                        );
+                }
+            )
+
+            // Data penilaian lahan
+            ->orWhereHas(
+                'penilaianLahan',
+                function ($lahanQuery) use ($search) {
+
+                    $lahanQuery
+                        ->where(
+                            'Tingkat_Erosi',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'Kondisi_Dreinase',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'Tekstur_Tanah',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'Kondisi_basah',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'Kondisi_kering',
+                            'like',
+                            '%' . $search . '%'
+                        );
+                }
+            )
+
+            // Data presentasi lahan
+            ->orWhereHas(
+                'presentasi',
+                function ($presentasiQuery) use ($search) {
+
+                    $presentasiQuery
+                        ->where(
+                            'bibit_tanaman',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'siklus_pupuk',
+                            'like',
+                            '%' . $search . '%'
+                        );
+                }
+            );
+
+        });
     }
 
     $dataKelayakan = $query
@@ -38,7 +132,10 @@ class KelayakanController extends Controller
 
     return view(
         'kelayakan.index',
-        compact('dataKelayakan')
+        compact(
+            'dataKelayakan',
+            'search'
+        )
     );
 }
 

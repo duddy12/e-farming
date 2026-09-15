@@ -36,6 +36,59 @@
 
     <div style="overflow-x: auto;">
 
+    <form
+        action="{{ route('penilaian-lahan.index') }}"
+        method="GET"
+        style="
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        "
+    >
+
+        <input
+            type="text"
+            name="search"
+            value="{{ $search ?? '' }}"
+            placeholder="Cari petani, erosi, drainase, tekstur, kondisi, atau periode..."
+            style="
+                flex: 1;
+                min-width: 250px;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            "
+        >
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Cari
+        </button>
+
+        @if(!empty($search))
+
+            <a
+                href="{{ route('penilaian-lahan.index') }}"
+                style="
+                    display: inline-block;
+                    padding: 10px 15px;
+                    background: #757575;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                Reset
+            </a>
+
+        @endif
+
+    </form>
+
         <table
             border="1"
             width="100%"
@@ -151,11 +204,24 @@
 
                 <tr>
                     <td
-                        colspan="8"
-                        style="text-align: center;"
-                    >
-                        Belum ada data penilaian lahan.
-                    </td>
+    colspan="{{ Auth::user()->isSuperAdmin() ? 9 : 8 }}"
+    style="
+        text-align: center;
+        padding: 25px;
+    "
+>
+    @if(!empty($search))
+
+        Data penilaian lahan dengan pencarian
+        "<strong>{{ $search }}</strong>"
+        tidak ditemukan.
+
+    @else
+
+        Belum ada data penilaian lahan.
+
+    @endif
+</td>
                 </tr>
 
             @endforelse

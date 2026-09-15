@@ -34,6 +34,59 @@
     </div>
 
 
+         <form
+        action="{{ route('solusi.index') }}"
+        method="GET"
+        style="
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        "
+    >
+
+        <input
+            type="text"
+            name="search"
+            value="{{ $search ?? '' }}"
+            placeholder="Cari petani, kategori, deskripsi, atau tanggal..."
+            style="
+                flex: 1;
+                min-width: 250px;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            "
+        >
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Cari
+        </button>
+
+        @if(!empty($search))
+
+            <a
+                href="{{ route('solusi.index') }}"
+                style="
+                    display: inline-block;
+                    padding: 10px 15px;
+                    background: #757575;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                Reset
+            </a>
+
+        @endif
+
+    </form>
+
     <div style="overflow-x: auto;">
 
         <table
@@ -136,12 +189,25 @@
             @empty
 
                 <tr>
-                    <td
-                        colspan="5"
-                        style="text-align: center;"
-                    >
-                        Belum ada data solusi.
-                    </td>
+                   <td
+    colspan="{{ Auth::user()->isSuperAdmin() ? 6 : 5 }}"
+    style="
+        text-align: center;
+        padding: 25px;
+    "
+>
+    @if(!empty($search))
+
+        Data solusi dengan pencarian
+        "<strong>{{ $search }}</strong>"
+        tidak ditemukan.
+
+    @else
+
+        Belum ada data solusi.
+
+    @endif
+</td>
                 </tr>
 
             @endforelse

@@ -10,24 +10,82 @@ use Illuminate\Support\Facades\Storage;
 
 class SiklusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
     $query = Siklus::with([
         'user',
         'evidences'
     ]);
 
+    // Petani hanya dapat melihat data miliknya sendiri
     if (!Auth::user()->isSuperAdmin()) {
-        $query->where('id_user', Auth::id());
+        $query->where(
+            'id_user',
+            Auth::id()
+        );
+    }
+
+    $search = trim($request->input('search', ''));
+
+    if ($search !== '') {
+
+        $query->where(function ($q) use ($search) {
+
+            // Cari berdasarkan sektor
+            $q->where(
+                'id_sektor',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan periode
+            $q->orWhere(
+                'periode',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan deskripsi siklus
+            $q->orWhere(
+                'desc',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan nama / username petani
+            $q->orWhereHas(
+                'user',
+                function ($userQuery) use ($search) {
+
+                    $userQuery->where(
+                        'nama_user',
+                        'like',
+                        '%' . $search . '%'
+                    )
+                    ->orWhere(
+                        'user_name',
+                        'like',
+                        '%' . $search . '%'
+                    );
+                }
+            );
+
+        });
     }
 
     $dataSiklus = $query
-        ->orderBy('id_siklus', 'desc')
+        ->orderBy(
+            'id_siklus',
+            'desc'
+        )
         ->get();
 
     return view(
         'siklus.index',
-        compact('dataSiklus')
+        compact(
+            'dataSiklus',
+            'search'
+        )
     );
 }
 

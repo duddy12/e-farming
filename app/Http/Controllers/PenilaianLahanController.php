@@ -10,17 +10,78 @@ use App\Models\User;
 
 class PenilaianLahanController extends Controller
 {
-    public function index()
-    {
-       $query = PenilaianLahan::with('user');
+    public function index(Request $request)
+{
+    $query = PenilaianLahan::with('user');
 
+    // User biasa hanya dapat melihat data miliknya sendiri
     if (!Auth::user()->isSuperAdmin()) {
         $query->where(
             'id_user',
             Auth::id()
         );
     }
-     $dataPenilaian = $query
+
+    $search = trim($request->input('search', ''));
+
+    if ($search !== '') {
+
+        $query->where(function ($q) use ($search) {
+
+            // Search data penilaian lahan
+            $q->where(
+                'Tingkat_Erosi',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'Kondisi_Dreinase',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'Tekstur_Tanah',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'Kondisi_basah',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'Kondisi_kering',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'periode',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhereHas(
+                'user',
+                function ($userQuery) use ($search) {
+
+                    $userQuery
+                        ->where(
+                            'nama_user',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'user_name',
+                            'like',
+                            '%' . $search . '%'
+                        );
+
+                }
+            );
+
+        });
+    }
+
+    $dataPenilaian = $query
         ->orderBy(
             'id_penilaian',
             'desc'
@@ -29,9 +90,12 @@ class PenilaianLahanController extends Controller
 
     return view(
         'penilaian_lahan.index',
-        compact('dataPenilaian')
+        compact(
+            'dataPenilaian',
+            'search'
+        )
     );
-    }
+}
 
    public function create()
 {

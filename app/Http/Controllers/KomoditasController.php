@@ -19,19 +19,51 @@ class KomoditasController extends Controller
     }
 
     // Menampilkan daftar komoditas
-    public function index()
-    {
-        $this->cekSuperAdmin();
-        $komoditas = Komoditas::orderBy(
-            'id_komoditas',
-            'desc'
-        )->get();
+  public function index(Request $request)
+{
+    $this->cekSuperAdmin();
 
-        return view(
-            'komoditas.index',
-            compact('komoditas')
-        );
-    }
+    $search = trim($request->input('search', ''));
+
+    $komoditas = Komoditas::when(
+        $search !== '',
+        function ($query) use ($search) {
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where(
+                    'nama_komoditas',
+                    'like',
+                    '%' . $search . '%'
+                )
+                ->orWhere(
+                    'kategori',
+                    'like',
+                    '%' . $search . '%'
+                )
+                ->orWhere(
+                    'satuan_produksi',
+                    'like',
+                    '%' . $search . '%'
+                )
+                ->orWhere(
+                    'keterangan',
+                    'like',
+                    '%' . $search . '%'
+                );
+
+            });
+
+        }
+    )
+    ->orderBy('id_komoditas', 'desc')
+    ->get();
+
+    return view(
+        'komoditas.index',
+        compact('komoditas', 'search')
+    );
+}
 
     // Menampilkan form tambah komoditas
     public function create()

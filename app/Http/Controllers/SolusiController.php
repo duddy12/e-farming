@@ -10,28 +10,81 @@ use Illuminate\Validation\Rule;
 
 class SolusiController extends Controller
 {
-    public function index()
-    {
-       
+    public function index(Request $request)
+{
+    $query = Solusi::with('user');
 
-        $query = Solusi::with('user');
-
+    // Petani hanya dapat melihat solusi miliknya sendiri
     if (!Auth::user()->isSuperAdmin()) {
         $query->where(
             'id_user',
             Auth::id()
         );
     }
-        $dataSolusi = Solusi::orderBy(
+
+    $search = trim($request->input('search', ''));
+
+    if ($search !== '') {
+
+        $query->where(function ($q) use ($search) {
+
+            // Cari berdasarkan kategori solusi
+            $q->where(
+                'kategori_solusi',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan deskripsi
+            $q->orWhere(
+                'desc',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan tanggal upload
+            $q->orWhere(
+                'tgl_upload',
+                'like',
+                '%' . $search . '%'
+            );
+
+            // Cari berdasarkan nama / username petani
+            $q->orWhereHas(
+                'user',
+                function ($userQuery) use ($search) {
+
+                    $userQuery->where(
+                        'nama_user',
+                        'like',
+                        '%' . $search . '%'
+                    )
+                    ->orWhere(
+                        'user_name',
+                        'like',
+                        '%' . $search . '%'
+                    );
+                }
+            );
+
+        });
+    }
+
+    $dataSolusi = $query
+        ->orderBy(
             'id_solusi',
             'desc'
-        )->get();
+        )
+        ->get();
 
-        return view(
-            'solusi.index',
-            compact('dataSolusi')
-        );
-    }
+    return view(
+        'solusi.index',
+        compact(
+            'dataSolusi',
+            'search'
+        )
+    );
+}
 
     public function create()
 {
