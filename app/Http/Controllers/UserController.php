@@ -30,19 +30,44 @@ class UserController extends Controller
     /**
      * Menampilkan daftar petani.
      */
-    public function index()
-    {
-        $this->cekSuperAdmin();
+    public function index(Request $request)
+{
+    $this->cekSuperAdmin();
 
-        $users = User::where('role', 'user')
-            ->orderBy('id_user', 'desc')
-            ->get();
+    $search = trim($request->input('search', ''));
 
-        return view(
-            'users.index',
-            compact('users')
-        );
-    }
+    $users = User::where('role', 'user')
+        ->when($search !== '', function ($query) use ($search) {
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where(
+                    'nama_user',
+                    'like',
+                    '%' . $search . '%'
+                )
+                ->orWhere(
+                    'user_name',
+                    'like',
+                    '%' . $search . '%'
+                )
+                ->orWhere(
+                    'email',
+                    'like',
+                    '%' . $search . '%'
+                );
+
+            });
+
+        })
+        ->orderBy('id_user', 'desc')
+        ->get();
+
+    return view(
+        'users.index',
+        compact('users', 'search')
+    );
+}
 
     /**
      * Form tambah petani.
