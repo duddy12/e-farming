@@ -86,8 +86,11 @@ class PenilaianLahanController extends Controller
             'id_penilaian',
             'desc'
         )
-        ->get();
+        ->paginate(5);
 
+        $dataPenilaian->appends(
+        $request->only('search')
+        );
     return view(
         'penilaian_lahan.index',
         compact(

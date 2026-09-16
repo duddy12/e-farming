@@ -57,8 +57,11 @@ class KomoditasController extends Controller
         }
     )
     ->orderBy('id_komoditas', 'desc')
-    ->get();
+    ->paginate(5);
 
+    $komoditas->appends(
+    $request->only('search')
+);
     return view(
         'komoditas.index',
         compact('komoditas', 'search')

@@ -107,7 +107,12 @@ class PerhitunganFsaController extends Controller
             'id_perhitungan',
             'desc'
         )
-        ->get();
+        ->paginate(3);
+
+         // Pertahankan parameter search saat pindah halaman
+        $dataPerhitungan->appends(
+        $request->only('search')
+        );
 
     return view(
         'perhitungan_fsa.index',

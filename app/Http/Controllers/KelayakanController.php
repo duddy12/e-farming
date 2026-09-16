@@ -128,7 +128,11 @@ class KelayakanController extends Controller
             'id_kelayakan',
             'desc'
         )
-        ->get();
+        ->paginate(5);
+
+        $dataKelayakan->appends(
+        $request->only('search')
+        );
 
     return view(
         'kelayakan.index',

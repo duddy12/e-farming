@@ -223,6 +223,114 @@
             </tbody>
 
         </table>
+       @if($users->hasPages())
+
+    <div style="
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    ">
+
+        {{-- Previous --}}
+        @if($users->onFirstPage())
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                &laquo; Previous
+            </span>
+
+        @else
+
+            <a
+                href="{{ $users->previousPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                &laquo; Previous
+            </a>
+
+        @endif
+
+
+        {{-- Nomor Halaman --}}
+        @for($page = 1; $page <= $users->lastPage(); $page++)
+
+            @if($page == $users->currentPage())
+
+                <span style="
+                    padding: 8px 12px;
+                    background: #1b5e20;
+                    color: white;
+                    border-radius: 5px;
+                    font-weight: bold;
+                ">
+                    {{ $page }}
+                </span>
+
+            @else
+
+                <a
+                    href="{{ $users->url($page) }}"
+                    style="
+                        padding: 8px 12px;
+                        background: #eee;
+                        color: #333;
+                        text-decoration: none;
+                        border-radius: 5px;
+                    "
+                >
+                    {{ $page }}
+                </a>
+
+            @endif
+
+        @endfor
+
+
+        {{-- Next --}}
+        @if($users->hasMorePages())
+
+            <a
+                href="{{ $users->nextPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                Next &raquo;
+            </a>
+
+        @else
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                Next &raquo;
+            </span>
+
+        @endif
+
+    </div>
+
+@endif
 
     </div>
 

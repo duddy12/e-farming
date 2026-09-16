@@ -78,7 +78,11 @@ class SiklusController extends Controller
             'id_siklus',
             'desc'
         )
-        ->get();
+        ->paginate(5);
+        // Pertahankan parameter search saat pindah halaman
+        $dataSiklus->appends(
+        $request->only('search')
+        );
 
     return view(
         'siklus.index',

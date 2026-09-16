@@ -248,6 +248,119 @@
 
         </table>
 
+        @if($dataKelayakan->hasPages())
+
+    <div style="
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    ">
+
+        {{-- Previous --}}
+        @if($dataKelayakan->onFirstPage())
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                &laquo; Previous
+            </span>
+
+        @else
+
+            <a
+                href="{{ $dataKelayakan->previousPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                &laquo; Previous
+            </a>
+
+        @endif
+
+
+        {{-- Nomor halaman --}}
+        @for(
+            $page = 1;
+            $page <= $dataKelayakan->lastPage();
+            $page++
+        )
+
+            @if($page == $dataKelayakan->currentPage())
+
+                <span style="
+                    padding: 8px 12px;
+                    background: #1b5e20;
+                    color: white;
+                    border-radius: 5px;
+                    font-weight: bold;
+                ">
+                    {{ $page }}
+                </span>
+
+            @else
+
+                <a
+                    href="{{ $dataKelayakan->url($page) }}"
+                    style="
+                        padding: 8px 12px;
+                        background: #eee;
+                        color: #333;
+                        text-decoration: none;
+                        border-radius: 5px;
+                    "
+                >
+                    {{ $page }}
+                </a>
+
+            @endif
+
+        @endfor
+
+
+        {{-- Next --}}
+        @if($dataKelayakan->hasMorePages())
+
+            <a
+                href="{{ $dataKelayakan->nextPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                Next &raquo;
+            </a>
+
+        @else
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                Next &raquo;
+            </span>
+
+        @endif
+
+    </div>
+
+@endif
+
     </div>
 
 </div>

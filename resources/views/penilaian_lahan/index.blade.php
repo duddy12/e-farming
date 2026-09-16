@@ -230,6 +230,119 @@
 
         </table>
 
+        @if($dataPenilaian->hasPages())
+
+    <div style="
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    ">
+
+        {{-- Previous --}}
+        @if($dataPenilaian->onFirstPage())
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                &laquo; Previous
+            </span>
+
+        @else
+
+            <a
+                href="{{ $dataPenilaian->previousPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                &laquo; Previous
+            </a>
+
+        @endif
+
+
+        {{-- Nomor halaman --}}
+        @for(
+            $page = 1;
+            $page <= $dataPenilaian->lastPage();
+            $page++
+        )
+
+            @if($page == $dataPenilaian->currentPage())
+
+                <span style="
+                    padding: 8px 12px;
+                    background: #1b5e20;
+                    color: white;
+                    border-radius: 5px;
+                    font-weight: bold;
+                ">
+                    {{ $page }}
+                </span>
+
+            @else
+
+                <a
+                    href="{{ $dataPenilaian->url($page) }}"
+                    style="
+                        padding: 8px 12px;
+                        background: #eee;
+                        color: #333;
+                        text-decoration: none;
+                        border-radius: 5px;
+                    "
+                >
+                    {{ $page }}
+                </a>
+
+            @endif
+
+        @endfor
+
+
+        {{-- Next --}}
+        @if($dataPenilaian->hasMorePages())
+
+            <a
+                href="{{ $dataPenilaian->nextPageUrl() }}"
+                style="
+                    padding: 8px 12px;
+                    background: #2e7d32;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                "
+            >
+                Next &raquo;
+            </a>
+
+        @else
+
+            <span style="
+                padding: 8px 12px;
+                background: #ddd;
+                color: #888;
+                border-radius: 5px;
+            ">
+                Next &raquo;
+            </span>
+
+        @endif
+
+    </div>
+
+@endif
+
     </div>
 
 </div>

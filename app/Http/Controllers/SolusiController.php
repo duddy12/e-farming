@@ -75,7 +75,11 @@ class SolusiController extends Controller
             'id_solusi',
             'desc'
         )
-        ->get();
+        ->paginate(5);
+            // Pertahankan parameter search saat pindah halaman
+        $dataSolusi->appends(
+        $request->only('search')
+);
 
     return view(
         'solusi.index',

@@ -61,8 +61,11 @@ class UserController extends Controller
 
         })
         ->orderBy('id_user', 'desc')
-        ->get();
-
+        ->paginate(5);
+        // Pertahankan parameter search saat pindah halaman
+        $users->appends(
+        $request->only('search')
+    );
     return view(
         'users.index',
         compact('users', 'search')
