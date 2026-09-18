@@ -70,28 +70,21 @@
                     ">
 
                         <a
-                            href="{{ asset(
-                                'storage/' .
-                                $evidence->foto_evidence
-                            ) }}"
-                            target="_blank"
-                        >
-
-                            <img
-                                src="{{ asset(
-                                    'storage/' .
-                                    $evidence->foto_evidence
-                                ) }}"
-                                alt="Evidence Lahan"
-                                style="
-                                    width: 120px;
-                                    height: 90px;
-                                    object-fit: cover;
-                                    border-radius: 5px;
-                                "
-                            >
-
-                        </a>
+    					href="{{ asset($evidence->foto_evidence) }}"
+   						 target="_blank"
+							>
+    					<img
+        				src="{{ asset($evidence->foto_evidence) }}"
+        				alt="Evidence Lahan"
+        				style="
+            			width: 120px;
+            			height: 90px;
+            			object-fit: cover;
+            			border-radius: 5px;
+            			border: 1px solid #ddd;
+        				"
+    					>
+						</a>
 
 
                         <div style="

@@ -30,3 +30,6 @@ e-farming.rar
 e-farming_php83.zip
 *.zip
 *.rar
+# Backup production
+/htdocs/
+/evidence/

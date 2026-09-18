@@ -229,8 +229,7 @@
             </tbody>
 
         </table>
-
-        @if($dataPenilaian->hasPages())
+                         @if($dataPenilaian->hasPages())
 
     <div style="
         margin-top: 20px;
@@ -271,7 +270,7 @@
         @endif
 
 
-        {{-- Nomor halaman --}}
+        {{-- Nomor Halaman --}}
         @for(
             $page = 1;
             $page <= $dataPenilaian->lastPage();

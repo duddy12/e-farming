@@ -79,11 +79,11 @@ class SiklusController extends Controller
             'desc'
         )
         ->paginate(5);
-        // Pertahankan parameter search saat pindah halaman
+		  // Pertahankan parameter search saat pindah halaman
         $dataSiklus->appends(
         $request->only('search')
-        );
-
+        );	
+        
     return view(
         'siklus.index',
         compact(
@@ -131,11 +131,10 @@ class SiklusController extends Controller
                 . '.'
                 . $foto->getClientOriginalExtension();
 
-            $foto->storeAs(
-                'evidence',
-                $namaFile,
-                'public'
-            );
+           		$foto->move(
+    			base_path('../evidence'),
+    			$namaFile
+				);
 
             SiklusEvidence::create([
                 'id_siklus' => $siklus->id_siklus,
@@ -241,11 +240,10 @@ class SiklusController extends Controller
                 . '.'
                 . $foto->getClientOriginalExtension();
 
-            $foto->storeAs(
-                'evidence',
-                $namaFile,
-                'public'
-            );
+          		$foto->move(
+    			base_path('../evidence'),
+    			$namaFile
+				);
 
             SiklusEvidence::create([
                 'id_siklus' => $siklus->id_siklus,

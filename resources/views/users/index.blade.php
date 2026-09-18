@@ -223,7 +223,7 @@
             </tbody>
 
         </table>
-       @if($users->hasPages())
+                             @if($users->hasPages())
 
     <div style="
         margin-top: 20px;

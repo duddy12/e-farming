@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login | E-Farming</title>
-
+	 <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <style>
         * {
             margin: 0;
@@ -110,6 +110,33 @@
             box-shadow:
                 0 0 0 3px rgba(25, 135, 84, 0.12);
         }
+
+		.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .form-control {
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: none;
+    border: none;
+    padding: 5px;
+
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+.toggle-password:hover {
+    color: #198754;
+}
 
         .btn-login {
             width: 100%;
@@ -237,23 +264,37 @@
 
 
             {{-- PASSWORD --}}
-            <div class="form-group">
+<div class="form-group">
 
-                <label for="password">
-                    Password
-                </label>
+    <label for="password">
+        Password
+    </label>
 
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    class="form-control"
-                    placeholder="Masukkan password"
-                    autocomplete="current-password"
-                    required
-                >
+    <div class="password-wrapper">
 
-            </div>
+        <input
+            type="password"
+            name="password"
+            id="password"
+            class="form-control"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+            aria-label="Tampilkan password"
+            title="Tampilkan password"
+        >
+            👁
+        </button>
+
+    </div>
+
+</div>
 
 
             {{-- BUTTON --}}
@@ -282,5 +323,44 @@
 
 </div>
 
+                <script>
+    const passwordInput =
+        document.getElementById('password');
+
+    const togglePassword =
+        document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+
+        if (passwordInput.type === 'password') {
+
+            passwordInput.type = 'text';
+
+            togglePassword.textContent = '🙈';
+            togglePassword.setAttribute(
+                'aria-label',
+                'Sembunyikan password'
+            );
+
+            togglePassword.title =
+                'Sembunyikan password';
+
+        } else {
+
+            passwordInput.type = 'password';
+
+            togglePassword.textContent = '👁';
+            togglePassword.setAttribute(
+                'aria-label',
+                'Tampilkan password'
+            );
+
+            togglePassword.title =
+                'Tampilkan password';
+        }
+
+    });
+</script>
+                
 </body>
 </html>

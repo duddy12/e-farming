@@ -215,7 +215,7 @@
             </tbody>
 
         </table>
-        @if($dataSolusi->hasPages())
+                         @if($dataSolusi->hasPages())
 
     <div style="
         margin-top: 20px;
@@ -327,6 +327,7 @@
     </div>
 
 @endif
+
 
     </div>
 

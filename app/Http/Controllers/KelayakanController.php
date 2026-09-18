@@ -129,8 +129,8 @@ class KelayakanController extends Controller
             'desc'
         )
         ->paginate(5);
-
-        $dataKelayakan->appends(
+       
+      	$dataKelayakan->appends(
         $request->only('search')
         );
 

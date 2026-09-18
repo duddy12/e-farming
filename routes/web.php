@@ -11,6 +11,7 @@ use App\Http\Controllers\SolusiController;
 use App\Http\Controllers\AnalisisController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Models\SiklusEvidence;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -21,7 +22,22 @@ Route::get('/login', [LoginController::class, 'showLogin'])
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
+	
+    Route::get('/siklus/evidence/{id}', function ($id) {
 
+    $evidence = SiklusEvidence::findOrFail($id);
+
+    $path = storage_path(
+        'app/public/' . $evidence->foto_evidence
+    );
+
+    if (!file_exists($path)) {
+        abort(404, 'File evidence tidak ditemukan.');
+    }
+
+    return response()->file($path);
+
+})->name('siklus.evidence');
     
     Route::get(
         '/dashboard',

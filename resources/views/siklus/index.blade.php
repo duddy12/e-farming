@@ -103,8 +103,17 @@
         <th>Sektor</th>
         <th>Periode</th>
         <th>Deskripsi</th>
-        <th>Evidence Foto</th>
-        <th>Tanggal Evidence</th>
+        <th>Evidence Foto
+    	<div style="
+        margin-top: 5px;
+        font-size: 11px;
+        font-weight: normal;
+        color: #777;
+        font-style: italic;
+    ">
+        * Gunakan aplikasi kamera timestamp
+    </div>
+    </th>
         <th>Aksi</th>
     </tr>
 </thead>
@@ -138,9 +147,7 @@
         <td style="text-align: center;">
 
            @if($item->evidences->count())
-             {{ \Carbon\Carbon::parse(
-            $item->evidences->last()->tanggal_diambil
-             )->format('d-m-Y H:i:s') }}
+            
 
     <div style="
         display: flex;
@@ -149,26 +156,26 @@
         max-width: 320px;
     ">
 
-        @foreach($item->evidences as $evidence)
+       @foreach($item->evidences as $evidence)
 
-            <a
-                href="{{ asset('storage/' . $evidence->foto_evidence) }}"
-                target="_blank"
-            >
-                <img
-                    src="{{ asset('storage/' . $evidence->foto_evidence) }}"
-                    alt="Evidence Lahan"
-                    style="
-                        width: 90px;
-                        height: 70px;
-                        object-fit: cover;
-                        border-radius: 5px;
-                        border: 1px solid #ddd;
-                    "
-                >
-            </a>
+    <a
+        href="{{ asset($evidence->foto_evidence) }}"
+        target="_blank"
+    >
+        <img
+            src="{{ asset($evidence->foto_evidence) }}"
+            alt="Evidence Lahan"
+            style="
+                width: 90px;
+                height: 70px;
+                object-fit: cover;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+            "
+        >
+    </a>
 
-        @endforeach
+@endforeach
 
     </div>
 
@@ -179,23 +186,8 @@
     </span>
 
 @endif
-
-        </td>
-
-        <td>
-
-            @if($item->tanggal_diambil)
-
-                {{ \Carbon\Carbon::parse($item->tanggal_diambil)
-                    ->format('d-m-Y H:i:s') }}
-
-            @else
-
-                -
-
-            @endif
-
-        </td>
+</td>
+       
 
         <td style="white-space: nowrap;">
 
@@ -275,7 +267,7 @@
 </tbody>
 
         </table>
-        @if($dataSiklus->hasPages())
+		  @if($dataSiklus->hasPages())
 
     <div style="
         margin-top: 20px;
@@ -387,7 +379,10 @@
     </div>
 
 @endif
-
+            
+            
+            
+            
     </div>
 
 </div>

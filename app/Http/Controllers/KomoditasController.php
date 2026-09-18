@@ -62,6 +62,7 @@ class KomoditasController extends Controller
     $komoditas->appends(
     $request->only('search')
 );
+
     return view(
         'komoditas.index',
         compact('komoditas', 'search')

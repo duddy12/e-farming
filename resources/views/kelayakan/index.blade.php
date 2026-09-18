@@ -247,8 +247,7 @@
             </tbody>
 
         </table>
-
-        @if($dataKelayakan->hasPages())
+                         @if($dataKelayakan->hasPages())
 
     <div style="
         margin-top: 20px;

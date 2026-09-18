@@ -27,7 +27,7 @@ class PerhitunganFsaController extends Controller
         'komoditasPembanding',
     ]);
 
-    // Petani hanya melihat riwayat FSA miliknya sendiri
+    // User biasa hanya melihat data miliknya
     if (!Auth::user()->isSuperAdmin()) {
         $query->where(
             'id_user',
@@ -35,62 +35,61 @@ class PerhitunganFsaController extends Controller
         );
     }
 
-    $search = trim($request->input('search', ''));
+    $search = trim(
+        $request->input('search', '')
+    );
 
     if ($search !== '') {
-
         $query->where(function ($q) use ($search) {
 
-            // Cari berdasarkan jenis sektor
+            // Search sektor
             $q->where(
                 'jenis_sektor',
                 'like',
                 '%' . $search . '%'
-            );
+            )
 
-            // Cari berdasarkan periode
-            $q->orWhere(
+            // Search periode
+            ->orWhere(
                 'periode',
                 'like',
                 '%' . $search . '%'
-            );
+            )
 
-            // Cari berdasarkan petani
-            $q->orWhereHas(
+            // Search petani
+            ->orWhereHas(
                 'user',
                 function ($userQuery) use ($search) {
-
-                    $userQuery->where(
-                        'nama_user',
-                        'like',
-                        '%' . $search . '%'
-                    )
-                    ->orWhere(
-                        'user_name',
-                        'like',
-                        '%' . $search . '%'
-                    );
+                    $userQuery
+                        ->where(
+                            'nama_user',
+                            'like',
+                            '%' . $search . '%'
+                        )
+                        ->orWhere(
+                            'user_name',
+                            'like',
+                            '%' . $search . '%'
+                        );
                 }
-            );
+            )
 
-            // Cari komoditas unggulan
-            $q->orWhereHas(
+            // Search komoditas unggulan
+            ->orWhereHas(
                 'komoditasUnggulan',
                 function ($komoditasQuery) use ($search) {
-
                     $komoditasQuery->where(
                         'nama_komoditas',
                         'like',
                         '%' . $search . '%'
                     );
                 }
-            );
+            )
 
-            // Cari komoditas pembanding
-            $q->orWhereHas(
+            // Search komoditas pembanding
+            ->orWhereHas(
                 'komoditasPembanding',
                 function ($komoditasQuery) use ($search) {
-
                     $komoditasQuery->where(
                         'nama_komoditas',
                         'like',
@@ -98,7 +97,6 @@ class PerhitunganFsaController extends Controller
                     );
                 }
             );
-
         });
     }
 
@@ -107,12 +105,12 @@ class PerhitunganFsaController extends Controller
             'id_perhitungan',
             'desc'
         )
-        ->paginate(3);
+        ->paginate(5);
 
-         // Pertahankan parameter search saat pindah halaman
-        $dataPerhitungan->appends(
+    // Search tetap terbawa saat pindah halaman
+    $dataPerhitungan->appends(
         $request->only('search')
-        );
+    );
 
     return view(
         'perhitungan_fsa.index',

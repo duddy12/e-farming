@@ -131,31 +131,42 @@
             {{-- EVIDENCE FOTO --}}
         <div style="margin-bottom: 20px;">
 
-            <label>
-            <strong>Evidence Foto Lahan</strong>
-            </label>
+    <label>
+        <strong>Evidence Foto Lahan</strong>
+    </label>
 
-            <br><br>
+    <input
+        type="file"
+        name="foto_evidence[]"
+        id="foto_evidence"
+        accept=".jpg,.jpeg,.png"
+        multiple
+        required
+        style="
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        "
+    >
 
-           <input
-                type="file"
-                name="foto_evidence[]"
-                accept=".jpg,.jpeg,.png"
-                multiple
-                required
-                style="
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                "
-            >
+    <div
+        id="infoFoto"
+        style="
+            margin-top: 6px;
+            font-size: 12px;
+            color: #777;
+            font-style: italic;
+        "
+    >
+        * Gunakan aplikasi kamera timestamp.
+        Pilih maksimal 6 foto.
+        Format JPG, JPEG, atau PNG.
+        Maksimal 5 MB per foto.
+    </div>
 
-            <small style="color: #666;">
-                Bisa memilih lebih dari satu foto(Max 6 Foto Valid).
-                Format JPG, JPEG, atau PNG.
-                Maksimal 5 MB per foto.
-            </small>
+</div>
 
 
         </div>           

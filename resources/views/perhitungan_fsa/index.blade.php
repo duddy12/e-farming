@@ -36,59 +36,6 @@
 
     </div>
 
-    <form
-        action="{{ route('perhitungan-fsa.index') }}"
-        method="GET"
-        style="
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        "
-    >
-
-        <input
-            type="text"
-            name="search"
-            value="{{ $search ?? '' }}"
-            placeholder="Cari petani, komoditas, sektor, atau periode..."
-            style="
-                flex: 1;
-                min-width: 250px;
-                padding: 10px 12px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 14px;
-            "
-        >
-
-        <button
-            type="submit"
-            class="btn"
-        >
-            Cari
-        </button>
-
-        @if(!empty($search))
-
-            <a
-                href="{{ route('perhitungan-fsa.index') }}"
-                style="
-                    display: inline-block;
-                    padding: 10px 15px;
-                    background: #757575;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                "
-            >
-                Reset
-            </a>
-
-        @endif
-
-    </form>
-
 
     <div style="overflow-x: auto;">
 
@@ -293,17 +240,19 @@
 
                     <tr>
 
-                      @if(!empty($search))
-
-    Data FSA dengan pencarian
-    "<strong>{{ $search }}</strong>"
-    tidak ditemukan.
-
-@else
-
-    Belum ada data perhitungan FSA.
-
-@endif
+                        <td
+                            colspan="{{
+                                Auth::user()->isSuperAdmin()
+                                    ? 11
+                                    : 10
+                            }}"
+                            style="
+                                text-align: center;
+                                padding: 20px;
+                            "
+                        >
+                            Belum ada data perhitungan FSA.
+                        </td>
 
                     </tr>
 
@@ -312,119 +261,124 @@
             </tbody>
 
         </table>
+                    	 </table>
 
-         @if($dataPerhitungan->hasPages())
+        {{-- PAGINATION --}}
+        @if($dataPerhitungan->hasPages())
 
-    <div style="
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-    ">
-
-        {{-- Previous --}}
-        @if($dataPerhitungan->onFirstPage())
-
-            <span style="
-                padding: 8px 12px;
-                background: #ddd;
-                color: #888;
-                border-radius: 5px;
+            <div style="
+                margin-top: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
             ">
-                &laquo; Previous
-            </span>
 
-        @else
+                {{-- Previous --}}
+                @if($dataPerhitungan->onFirstPage())
 
-            <a
-                href="{{ $dataPerhitungan->previousPageUrl() }}"
-                style="
-                    padding: 8px 12px;
-                    background: #2e7d32;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                "
-            >
-                &laquo; Previous
-            </a>
-
-        @endif
-
-
-        {{-- Nomor Halaman --}}
-        @for(
-            $page = 1;
-            $page <= $dataPerhitungan->lastPage();
-            $page++
-        )
-
-            @if($page == $dataPerhitungan->currentPage())
-
-                <span style="
-                    padding: 8px 12px;
-                    background: #1b5e20;
-                    color: white;
-                    border-radius: 5px;
-                    font-weight: bold;
-                ">
-                    {{ $page }}
-                </span>
-
-            @else
-
-                <a
-                    href="{{ $dataPerhitungan->url($page) }}"
-                    style="
+                    <span style="
                         padding: 8px 12px;
-                        background: #eee;
-                        color: #333;
-                        text-decoration: none;
+                        background: #ddd;
+                        color: #888;
                         border-radius: 5px;
-                    "
-                >
-                    {{ $page }}
-                </a>
+                    ">
+                        &laquo; Previous
+                    </span>
 
-            @endif
+                @else
 
-        @endfor
+                    <a
+                        href="{{ $dataPerhitungan->previousPageUrl() }}"
+                        style="
+                            padding: 8px 12px;
+                            background: #2e7d32;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                        "
+                    >
+                        &laquo; Previous
+                    </a>
+
+                @endif
 
 
-        {{-- Next --}}
-        @if($dataPerhitungan->hasMorePages())
+                {{-- Nomor Halaman --}}
+                @for(
+                    $page = 1;
+                    $page <= $dataPerhitungan->lastPage();
+                    $page++
+                )
 
-            <a
-                href="{{ $dataPerhitungan->nextPageUrl() }}"
-                style="
-                    padding: 8px 12px;
-                    background: #2e7d32;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                "
-            >
-                Next &raquo;
-            </a>
+                    @if(
+                        $page ==
+                        $dataPerhitungan->currentPage()
+                    )
 
-        @else
+                        <span style="
+                            padding: 8px 12px;
+                            background: #1b5e20;
+                            color: white;
+                            border-radius: 5px;
+                            font-weight: bold;
+                        ">
+                            {{ $page }}
+                        </span>
 
-            <span style="
-                padding: 8px 12px;
-                background: #ddd;
-                color: #888;
-                border-radius: 5px;
-            ">
-                Next &raquo;
-            </span>
+                    @else
 
-        @endif
+                        <a
+                            href="{{ $dataPerhitungan->url($page) }}"
+                            style="
+                                padding: 8px 12px;
+                                background: #eee;
+                                color: #333;
+                                text-decoration: none;
+                                border-radius: 5px;
+                            "
+                        >
+                            {{ $page }}
+                        </a>
 
-    </div>
+                    @endif
 
-@endif
+                @endfor
+
+
+                {{-- Next --}}
+                @if($dataPerhitungan->hasMorePages())
+
+                    <a
+                        href="{{ $dataPerhitungan->nextPageUrl() }}"
+                        style="
+                            padding: 8px 12px;
+                            background: #2e7d32;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                        "
+                    >
+                        Next &raquo;
+                    </a>
+
+                @else
+
+                    <span style="
+                        padding: 8px 12px;
+                        background: #ddd;
+                        color: #888;
+                        border-radius: 5px;
+                    ">
+                        Next &raquo;
+                    </span>
+
+                @endif
+
+            </div>
+
+        @endif        
 
     </div>
 

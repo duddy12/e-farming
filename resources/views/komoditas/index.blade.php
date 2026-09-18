@@ -210,8 +210,7 @@
         </tbody>
 
     </table>
-
-    @if($komoditas->hasPages())
+	 @if($komoditas->hasPages())
 
     <div style="
         margin-top: 20px;
@@ -319,7 +318,6 @@
     </div>
 
 @endif
-
 </div>
 
 @endsection

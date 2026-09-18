@@ -76,7 +76,7 @@ class SolusiController extends Controller
             'desc'
         )
         ->paginate(5);
-            // Pertahankan parameter search saat pindah halaman
+             // Pertahankan parameter search saat pindah halaman
         $dataSolusi->appends(
         $request->only('search')
 );
