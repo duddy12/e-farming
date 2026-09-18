@@ -296,6 +296,16 @@
 
 </div>
 
+            <div style="text-align: right; margin-top: -8px; margin-bottom: 15px;">
+    <a href="{{ route('password.request') }}"
+       style="
+           color: #198c55;
+           text-decoration: none;
+           font-size: 14px;
+       ">
+        Lupa Password?
+    </a>
+</div>
 
             {{-- BUTTON --}}
             <button
