@@ -39,7 +39,7 @@
     margin-bottom: 16px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 786px) {
     .dashboard-chart-grid {
         grid-template-columns: 1fr;
     }
@@ -353,9 +353,9 @@
     Grafik Analisis Pertanian
 </h3>
 
-<div class="dashboard-chart-grid">
+<div class="dashboard-chart">
 
-    <div class="dashboard-chart-card">
+    <div class="dashboard-chart-card" >
 
         <h4>Statistik Data Pertanian</h4>
 
